@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Portal</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>LVMS</h1>
+            <p style="color: var(--text-muted)">HR Administration Portal</p>
+        </header>
+
+        <nav class="nav">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="leave_request.html">Apply Leave</a>
+            <a href="history.html">Leave History</a>
+            <a href="hod_db.html">HOD Portal</a>
+            <a href="HR_db.html" class="active">HR Portal</a>
+        </nav>
+
+        <div class="main-content">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                    <h2>Final HR Approvals</h2>
+                    <span id="count" class="status-badge status-Final-Approved">0 Pending</span>
+                </div>
+                
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Type & HOD Status</th>
+                                <th>Dates</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="approvalTable">
+                            <!-- Content loaded via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        function render() {
+            const leaves = getLeaves();
+            const tableBody = document.getElementById("approvalTable");
+            const pending = leaves.filter(l => l.status === "HOD Approved");
+            
+            document.getElementById("count").textContent = `${pending.length} Pending`;
+            tableBody.innerHTML = "";
+
+            if (pending.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--text-muted); padding: 3rem;">No HOD-approved requests waiting for final review.</td></tr>';
+            } else {
+                pending.forEach(leave => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>
+                            <div style="font-weight: 600">${leave.name}</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted)">${leave.empId} • ${leave.dept}</div>
+                        </td>
+                        <td>
+                            <div style="font-weight: 500">${leave.type}</div>
+                            <div style="font-size: 0.75rem; color: var(--primary)">Approved by HOD</div>
+                        </td>
+                        <td>
+                            <div style="font-size: 0.875rem">${formatDate(leave.start)}</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted)">to ${formatDate(leave.end)}</div>
+                        </td>
+                        <td>
+                            <div style="display: flex; gap: 0.5rem;">
+                                <button onclick="handleAction(${leave.id}, 'Final Approved')" style="background: var(--success); padding: 0.5rem 1rem; font-size: 0.7rem; border-radius: 4px;">Final Approve</button>
+                                <button onclick="handleAction(${leave.id}, 'Rejected')" style="background: var(--danger); padding: 0.5rem 1rem; font-size: 0.7rem; border-radius: 4px;">Reject</button>
+                            </div>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+        }
+
+        function handleAction(id, status) {
+            updateLeaveStatus(id, status);
+            render();
+        }
+
+        document.addEventListener("DOMContentLoaded", render);
+    </script>
+
+</body>
+</html>

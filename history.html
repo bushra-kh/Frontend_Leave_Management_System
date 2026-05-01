@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leave History</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet"> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+</style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>LVMS</h1>
+            <p style="color: var(--text-muted)">Leave Management System</p>
+        </header>
+
+        <nav class="nav">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="leave_request.html">Apply for Leave</a>
+            <a href="history.html" class="active">Leave History</a>
+            <a href="hod_db.html">HOD Portal</a>
+            <a href="HR_db.html">HR Portal</a>
+        </nav>
+
+        <div class="main-content">
+            <div class="card">
+                <h2>Leave History</h2>
+                <div style="overflow-x: auto;">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Employee</th>
+                                <th>Type</th>
+                                <th>Dates</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTable">
+                            <!-- Content loaded via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+                <div class="card chart-card">
+                    <h3 style="margin-bottom: 2rem; font-weight: 800; text-transform: uppercase;">Leaves per Month</h3>
+                    <canvas id="monthChart"></canvas>
+                </div>
+                <div class="card chart-card">
+                    <h3 style="margin-bottom: 2rem; font-weight: 800; text-transform: uppercase;">Leave Distribution</h3>
+                    <canvas id="typeChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const leaves = getLeaves();
+            const tableBody = document.getElementById("historyTable");
+
+            if (leaves.length === 0) {
+                tableBody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--text-muted)">No leave records found.</td></tr>';
+            } else {
+                leaves.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).forEach(leave => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                        <td>
+                            <div style="font-weight: 600">${leave.name}</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted)">${leave.empId} • ${leave.dept}</div>
+                        </td>
+                        <td>${leave.type}</td>
+                        <td>
+                            <div style="font-size: 0.875rem">${formatDate(leave.start)}</div>
+                            <div style="font-size: 0.75rem; color: var(--text-muted)">to ${formatDate(leave.end)}</div>
+                        </td>
+                        <td>
+                            <span class="status-badge status-${leave.status.replace(' ', '-')}">${leave.status}</span>
+                        </td>
+                    `;
+                    tableBody.appendChild(row);
+                });
+            }
+
+            renderCharts(leaves);
+        });
+
+        function renderCharts(leaves) {
+            // Month Chart
+            const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+            const monthData = new Array(12).fill(0);
+            
+            leaves.forEach(l => {
+                const month = new Date(l.start).getMonth();
+                monthData[month]++;
+            });
+
+            new Chart(document.getElementById('monthChart'), {
+                type: 'bar',
+                data: {
+                    labels: months,
+                    datasets: [{
+                        label: 'Leaves',
+                        data: monthData,
+                        backgroundColor: '#FF5F1F',
+                        borderRadius: 0,
+                        borderWidth: 2,
+                        borderColor: '#000'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: { legend: { display: false } },
+                    scales: {
+                        y: { beginAtZero: true, grid: { color: 'rgba(0,0,0,0.05)' }, ticks: { color: '#000', font: { weight: 'bold' } } },
+                        x: { grid: { display: false }, ticks: { color: '#000', font: { weight: 'bold' } } }
+                    }
+                }
+            });
+
+            // Type Distribution
+            const types = { 'Casual': 0, 'Sick': 0, 'Annual': 0 };
+            leaves.forEach(l => types[l.type]++);
+
+            new Chart(document.getElementById('typeChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: Object.keys(types),
+                    datasets: [{
+                        data: Object.values(types),
+                        backgroundColor: ['#FF5F1F', '#000000', '#FFFFFF'],
+                        borderColor: '#000',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { position: 'bottom', labels: { color: '#000', font: { weight: 'bold' }, padding: 20 } }
+                    },
+                    cutout: '70%'
+                }
+            });
+        }
+    </script>
+
+</body>
+</html>

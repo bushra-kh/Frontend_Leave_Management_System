@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Apply Leave </title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>LVMS</h1>
+            <p style="color: var(--text-muted)">Leave Management System</p>
+        </header>
+
+        <nav class="nav">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="leave_request.html" class="active">Apply Leave</a>
+            <a href="history.html">Leave History</a>
+            <a href="hod_db.html">HOD Portal</a>
+            <a href="HR_db.html">HR Portal</a>
+        </nav>
+
+        <div class="main-content">
+            <div class="card">
+                <h2>Submit Leave Request</h2>
+                <form id="leaveForm">
+                    <div class="form-group">
+                        <label for="emp_id">Employee ID</label>
+                        <input type="text" id="emp_id" placeholder="e.g. EMP-101" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="emp_name">Full Name</label>
+                        <input type="text" id="emp_name" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="dept">Department</label>
+                        <select id="dept" required>
+                            <option value="">Select Department</option>
+                            <option value="IT">IT Department</option>
+                            <option value="HR">Human Resources</option>
+                            <option value="Finance">Finance</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Operations">Operations</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="leave_type">Leave Type</label>
+                        <select id="leave_type" required>
+                            <option value="Casual">Casual Leave</option>
+                            <option value="Sick">Sick Leave</option>
+                            <option value="Annual">Annual Leave</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="start_date">From Date</label>
+                        <input type="date" id="start_date" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="end_date">To Date</label>
+                        <input type="date" id="end_date" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="reason">Reason for Leave</label>
+                        <textarea id="reason" rows="3" placeholder="Please provide a brief reason..." required></textarea>
+                    </div>
+                    <div class="form-group full-width" style="margin-top: 1rem;">
+                        <button type="submit">Submit Request</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+    <script>
+        document.getElementById("leaveForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+
+            const start = new Date(document.getElementById("start_date").value);
+            const end = new Date(document.getElementById("end_date").value);
+
+            if (end < start) {
+                alert("End date cannot be before start date!");
+                return;
+            }
+
+            const leaveData = {
+                empId: document.getElementById("emp_id").value,
+                name: document.getElementById("emp_name").value,
+                dept: document.getElementById("dept").value,
+                type: document.getElementById("leave_type").value,
+                start: document.getElementById("start_date").value,
+                end: document.getElementById("end_date").value,
+                reason: document.getElementById("reason").value
+            };
+
+            addLeave(leaveData);
+
+            alert("Your leave request has been submitted successfully!");
+            this.reset();
+            window.location.href = "history.html";
+        });
+    </script>
+
+</body>
+</html>

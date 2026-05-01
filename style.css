@@ -1,0 +1,266 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;900&display=swap');
+
+:root {
+    --primary: #FF5F1F; /* Alfred Neon Orange */
+    --primary-hover: #e5551b;
+    --bg-light: #F5F5F5;
+    --card-bg: #FFFFFF;
+    --text-main: #000000;
+    --text-muted: #666666;
+    --grid-line: #000000;
+    --success: #10B981;
+    --warning: #F59E0B;
+    --danger: #EF4444;
+    --glow-1: rgba(167, 139, 250, 0.15); /* Lavender glow */
+    --glow-2: rgba(56, 189, 248, 0.15); /* Blue glow */
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Montserrat', sans-serif;
+}
+
+body {
+    background-color: var(--bg-light);
+    background-image: 
+        radial-gradient(circle at 20% 30%, var(--glow-1) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, var(--glow-2) 0%, transparent 40%),
+        linear-gradient(to right, rgba(0,0,0,0.05) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(0,0,0,0.05) 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+    color: var(--text-main);
+    min-height: 100vh;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    border-left: 1px solid var(--grid-line);
+    border-right: 1px solid var(--grid-line);
+    min-height: 100vh;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+}
+
+header {
+    padding: 4rem 2rem;
+    border-bottom: 1px solid var(--grid-line);
+    text-align: left;
+    position: relative;
+}
+
+header::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 2rem;
+    width: 10px;
+    height: 10px;
+    background: var(--primary);
+    transform: rotate(45deg);
+}
+
+h1 {
+    font-size: 5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 0.9;
+    letter-spacing: -2px;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+}
+
+header p {
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    letter-spacing: 2px;
+    color: var(--text-muted);
+}
+
+.nav {
+    display: flex;
+    border-bottom: 1px solid var(--grid-line);
+}
+
+.nav a {
+    flex: 1;
+    text-align: center;
+    padding: 1.5rem;
+    color: var(--text-main);
+    text-decoration: none;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    border-right: 1px solid var(--grid-line);
+    transition: all 0.3s;
+}
+
+.nav a:last-child {
+    border-right: none;
+}
+
+.nav a:hover, .nav a.active {
+    background: var(--primary);
+    color: white;
+}
+
+.main-content {
+    padding: 3rem 2rem;
+    flex: 1;
+}
+
+.card {
+    background: var(--card-bg);
+    border: 2px solid var(--grid-line);
+    border-radius: 0;
+    padding: 2.5rem;
+    position: relative;
+    box-shadow: 10px 10px 0px var(--grid-line);
+    margin-bottom: 3rem;
+}
+
+.card h2 {
+    font-size: 2rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin-bottom: 2rem;
+    border-left: 6px solid var(--primary);
+    padding-left: 1rem;
+}
+
+form {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.form-group.full-width {
+    grid-column: span 2;
+}
+
+label {
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--text-main);
+}
+
+input, select, textarea {
+    background: transparent;
+    border: 2px solid var(--grid-line);
+    border-radius: 0;
+    padding: 1rem;
+    color: var(--text-main);
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    background: #fff;
+    box-shadow: 5px 5px 0px var(--primary);
+}
+
+button {
+    background: var(--primary);
+    color: white;
+    border: 2px solid var(--grid-line);
+    border-radius: 9999px; /* Pill shaped */
+    padding: 1.25rem 2.5rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: fit-content;
+}
+
+button:hover {
+    background: var(--text-main);
+    transform: translate(-2px, -2px);
+    box-shadow: 4px 4px 0px var(--primary);
+}
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-top: 1rem;
+}
+
+th {
+    text-align: left;
+    padding: 1.25rem;
+    background: var(--text-main);
+    color: white;
+    font-weight: 800;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+}
+
+td {
+    padding: 1.25rem;
+    border-bottom: 1px solid var(--grid-line);
+    font-weight: 500;
+}
+
+.status-badge {
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    border: 2px solid var(--grid-line);
+}
+
+.status-Pending { background: #fff; color: var(--warning); border-color: var(--warning); }
+.status-HOD-Approved { background: #fff; color: var(--primary); border-color: var(--primary); }
+.status-Final-Approved { background: #fff; color: var(--success); border-color: var(--success); }
+.status-Rejected { background: #fff; color: var(--danger); border-color: var(--danger); }
+
+.charts-grid {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 3rem;
+    margin-top: 2rem;
+}
+
+.chart-card {
+    height: 450px;
+    box-shadow: 10px 10px 0px var(--grid-line);
+}
+
+@media (max-width: 900px) {
+    h1 { font-size: 3.5rem; }
+    form, .charts-grid {
+        grid-template-columns: 1fr;
+    }
+    .form-group.full-width {
+        grid-column: span 1;
+    }
+    .nav {
+        flex-wrap: wrap;
+    }
+    .nav a {
+        flex: 1 0 50%;
+        border-bottom: 1px solid var(--grid-line);
+    }
+}
