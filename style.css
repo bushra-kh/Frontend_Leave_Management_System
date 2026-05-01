@@ -244,8 +244,15 @@ td {
 }
 
 .chart-card {
-    height: 450px;
+    height: 560px;
+    display: flex;
+    flex-direction: column;
     box-shadow: 10px 10px 0px var(--grid-line);
+}
+
+.chart-card canvas {
+    flex: 1;
+    min-height: 0;
 }
 
 @media (max-width: 900px) {
