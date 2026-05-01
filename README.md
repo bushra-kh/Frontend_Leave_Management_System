@@ -28,5 +28,5 @@ A lightweight frontend-only Leave Management System (LVMS) built with HTML, CSS,
 
 ## Notes
 
-- This is a frontend demo project.
+- This is a frontend assignment demo project.
 - Clearing browser storage will remove saved leave records.
