@@ -12,7 +12,7 @@ A lightweight frontend-only Leave Management System (LVMS) built with HTML, CSS,
 
 ## Project Files
 
-- `dashboard.html` - Overview and quick actions
+- `index.html` - Overview and quick actions
 - `leave_request.html` - Submit leave requests
 - `history.html` - Request history and analytics
 - `hod_db.html` - Department-level approvals
@@ -22,7 +22,7 @@ A lightweight frontend-only Leave Management System (LVMS) built with HTML, CSS,
 
 ## How to Run
 
-1. Open `dashboard.html` in your browser.
+1. Open `index.html` in your browser.
 2. Navigate using the top menu.
 3. Data is stored in browser local storage (no backend required).
 
